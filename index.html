@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bissexto?</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1, p{
+            margin: 50px 0;
+            text-justify: center;
+            text-align: center;
+            font: 100 3rem monospace;
+        }
+
+        div{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        input{
+            font: 100 2.5rem monospace;
+            border: 1px solid black;
+            height: 50px;
+            outline: none;
+        }
+
+        #ano{
+            margin-right: 30px;
+            text-justify: center;
+            text-align: center;
+            padding: 0 auto;
+            font: 100 2rem monospace;
+            border: 1px solid black;
+            border-radius: 3rem;
+            height: 50px;
+            width: 100px;
+            outline: none;
+            transition: font 300ms, border-radius 300ms, width 300ms;
+        }
+
+        #ano:focus-within {
+            font: 100 2.5rem monospace;
+            border-radius: 1rem;
+            width: 200px;
+        }
+
+        #pesq{
+            width: 180px;
+            border-radius: 3rem;
+            transition: width 300ms, border-radius 300ms;
+        }
+
+        #pesq:hover{
+            width: 250px;
+            border-radius: 1rem;
+        }
+
+        #sera{
+            display: initial;
+            text-align: center;
+        }
+
+        .aninho{
+            font: 100 7rem Arial;
+            color: #ff0000;
+        }
+
+        span{
+            color: red;
+        }
+
+        #tera{
+            margin-top: 50px;
+            width: 450px;
+            border-radius: 3rem;
+            transition: width 300ms, border-radius 300ms;
+        }
+
+        #tera:hover{
+            width: 600px;
+            border-radius: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 id="title">Pesquise por um ano e descubra se ele é Bissexto ou não</h1>
+    <div>
+        <input type="text" id="ano" onkeypress="$(this).mask('000000000000000000000000000000000000000000000000000000000000000000000000000000')">
+        <input type="button" value="Procurar" id="pesq" onclick = "pesquisa()">
+    </div>
+
+    <div id="sera">
+    </div>
+
+    <div id="textinhoTera">
+    </div>
+
+    <script>
+        var pegaAno = document.querySelector('#ano');
+        var pesq = document.querySelector('#pesq');
+        var sera = document.querySelector('#sera');
+        var textinhoTera = document.querySelector('#textinhoTera')
+        var agora = new Date();
+        var anoAtual = agora.getFullYear();
+        var anoNum;
+        var seraOuFoi;
+        var anoDiv;
+        console.log(anoAtual);
+        
+        function pesquisa(){
+            anoNum = pegaAno.value;
+            pegaAno.value = "";
+            if(anoNum != ""){
+                if(anoNum < anoAtual){
+                    seraOuFoi = " foi";
+                }
+                if(anoNum == anoAtual){
+                    seraOuFoi = " é";
+                }
+                if(anoNum > anoAtual){
+                    seraOuFoi = " será";
+                }
+
+                anoDiv = (anoNum%400)%4;
+
+                if(anoDiv == 0){
+                    sera.innerHTML = "<h1 class='aninho'>" + anoNum + "</h1><p class='textinho'> O ano de " + anoNum + seraOuFoi + " <span>Bissexto</span></p><div id='proxBis'><input type='button' value='Anos Bissextos pertos' id='tera' onclick='tera()'></div>"
+                }else{
+                    sera.innerHTML = "<h1 class='aninho'>" + anoNum + "</h1><p class='textinho'> O ano de " + anoNum + " não" + seraOuFoi + " <span>Bissexto</span></p><div id='proxBis'><input type='button' value='Anos Bissextos pertos' id='tera' onclick='tera()'></div>";
+                }
+
+            }else{
+                sera.innerHTML = ""
+
+            }
+        }
+
+        var primeiro, segundo;
+
+        function tera(){
+            primeiro = 0;
+            segundo = 0;
+            if(anoNum != 0){
+                if(anoDiv == 0){
+                    primeiro = anoNum - 4;
+                    segundo = anoNum - (-4);
+                }
+                if(anoDiv == 1){
+                    primeiro = anoNum - 1;
+                    segundo = anoNum - (-3);
+                }
+                if(anoDiv == 2){
+                    primeiro = anoNum - 2;
+                    segundo = anoNum - (-2);
+                }
+                if(anoDiv == 3){
+                    primeiro = anoNum - 3;
+                    segundo = anoNum - (-1);
+                }
+                primeiro = String(primeiro);
+                segundo = String(segundo);
+                textinhoTera.innerHTML = "<p>Os anos Bissextos mais pertos são o ano <span>" + primeiro + "</span> e <span>" +  segundo + "</span></p>"
+            }else{
+                primeiro = anoNum + 4;
+                textinhoTera.innerHTML = "<p>O ano Bissexto perto é o ano " + primeiro + "</p>"
+            }
+
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+</body>
+</html>
